@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>WarpMaster - Login</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" href="https://cdn.modrinth.com/data/cached_images/321cc3ae1faf220b2c8cb4499153cc43558bef27.png" type="image/png">
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo">
+                    <i class="fas fa-compass"></i>
+                    <h1>WarpMaster</h1>
+                </div>
+            </div>
+            <div class="login-form">
+                <div class="form-group">
+                    <label for="apiKey"><i class="fas fa-key"></i> API-Schlüssel</label>
+                    <div class="input-group">
+                        <input type="password" id="apiKey" placeholder="Gib deinen API-Schlüssel ein">
+                        <button id="togglePassword" type="button">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button id="loginButton" class="login-button">
+                    <i class="fas fa-sign-in-alt"></i> Anmelden
+                </button>
+                <div id="errorMessage" class="error-message"></div>
+            </div>
+            
+            <div class="minecraft-decoration">
+                <div class="creeper"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/login.js"></script>
+</body>
+</html>

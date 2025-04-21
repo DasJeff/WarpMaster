@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+.login-body {
+    font-family: 'VT323', monospace;
+    background-color: #828282;
+    color: #FFFFFF;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.login-card {
+    width: 400px;
+    background-color: #C8984D;
+    border: 4px solid #000;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 4px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    position: relative;
+}
+
+.login-header {
+    background-color: var(--grass-green);
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 4px solid #000;
+}
+
+.login-header .logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.login-header .logo i {
+    font-size: 2.2rem;
+    margin-right: 0.5rem;
+    color: #FFFFFF;
+    text-shadow: 2px 2px 0px #3F3F3F;
+}
+
+.login-header h1 {
+    font-size: 2.8rem;
+    margin: 0;
+    text-shadow: 2px 2px 0px #3F3F3F;
+}
+
+.login-form {
+    padding: 2rem;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+    font-size: 1.3rem;
+    color: #FFFFFF;
+    text-shadow: 1px 1px 0px #000;
+}
+
+.form-group label i {
+    color: var(--gold);
+}
+
+.input-group {
+    display: flex;
+    position: relative;
+}
+
+.input-group input {
+    flex: 1;
+    padding: 0.8rem;
+    border: 3px solid #000;
+    font-family: 'VT323', monospace;
+    font-size: 1.2rem;
+    background-color: #D8BF8D;
+    color: #000;
+    transition: all 0.2s ease;
+}
+
+.input-group input:focus {
+    border-color: var(--water-blue);
+    outline: none;
+    background-color: #FFFFFF;
+}
+
+.input-group button {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #000;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 1.2rem;
+}
+
+.input-group button:hover {
+    color: var(--water-blue);
+}
+
+.login-button {
+    width: 100%;
+    padding: 0.8rem;
+    font-family: 'VT323', monospace;
+    font-size: 1.3rem;
+    color: white;
+    background-color: var(--water-blue);
+    border: 2px solid #000;
+    border-bottom-width: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0px #000;
+}
+
+.login-button i {
+    margin-right: 0.8rem;
+}
+
+.login-button:hover {
+    background-color: var(--water-light);
+}
+
+.login-button:active {
+    transform: translateY(2px);
+    border-bottom-width: 2px;
+}
+
+.error-message {
+    color: #FFFFFF;
+    background-color: var(--redstone);
+    border: 2px solid #000;
+    padding: 0.5rem;
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    text-align: center;
+    min-height: 1.5rem;
+    display: none;
+    text-shadow: 1px 1px 0px #000;
+}
+
+.error-message.show {
+    display: block;
+}
+
+.minecraft-decoration {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    z-index: 0;
+    opacity: 0.3;
+}
+
+.creeper {
+    width: 120px;
+    height: 120px;
+    background-color: #50A050;
+    border: 3px solid #000;
+    position: relative;
+}
+
+.creeper::before, .creeper::after {
+    content: '';
+    position: absolute;
+    background-color: #000;
+}
+
+.creeper::before {
+    width: 80px;
+    height: 15px;
+    top: 40px;
+    left: 20px;
+}
+
+.creeper::after {
+    width: 15px;
+    height: 20px;
+    bottom: 30px;
+    left: 52px;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.shake {
+    animation: shake 0.5s;
+}
+
+.login-body::-webkit-scrollbar {
+    width: 16px;
+}
+
+.login-body::-webkit-scrollbar-track {
+    background-color: #5A5A5A;
+    border: 2px solid #000;
+}
+
+.login-body::-webkit-scrollbar-thumb {
+    background-color: #C8984D;
+    border: 2px solid #000;
+}
+
+.login-body::-webkit-scrollbar-thumb:hover {
+    background-color: #A67B3D;
+}
+
+@media (max-width: 480px) {
+    .login-card {
+        width: 90%;
+    }
+    
+    .login-header .logo i {
+        font-size: 1.8rem;
+    }
+    
+    .login-header h1 {
+        font-size: 2.2rem;
+    }
+
+}

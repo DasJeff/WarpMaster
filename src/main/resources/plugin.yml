@@ -1,0 +1,51 @@
+name: WarpMaster
+version: '${version}'
+main: de.dasjeff.warpMaster.WarpMaster
+api-version: '1.21'
+description: Ein Warp System mit Web Integration
+author: DasJeff
+
+commands:
+  setwarp:
+    description: Setze einen Warp Punkt
+    usage: /setwarp <name>
+    permission: warpmaster.warp.set
+  warp:
+    description: Teleportiere dich zu einem Warp Punkt
+    usage: /warp <name>
+    permission: warpmaster.warp.use
+  warps:
+    description: Liste alle deine Warp Punkte
+    usage: /warps
+    permission: warpmaster.warp.list
+  warpmaster:
+    description: Admin Befehle für WarpMaster
+    usage: /warpmaster <subcommand> [args...]
+    permission: warpmaster.admin
+
+permissions:
+  warpmaster.warp.set:
+    description: Erlaubt das Setzen von Warp Punkten
+    default: true
+  warpmaster.warp.use:
+    description: Erlaubt das Teleportieren zu Warp Punkten
+    default: true
+  warpmaster.warp.list:
+    description: Erlaubt das Auflisten von Warp Punkten
+    default: true
+  warpmaster.admin:
+    description: Erlaubt das Verwenden von Admin Befehlen
+    default: op
+    children:
+      warpmaster.admin.delete: true
+      warpmaster.admin.limit: true
+      warpmaster.admin.transfer: true
+  warpmaster.admin.delete:
+    description: Erlaubt das Löschen von Warp Punkten
+    default: op
+  warpmaster.admin.limit:
+    description: Erlaubt das Setzen von Warp Limits
+    default: op
+  warpmaster.admin.transfer:
+    description: Erlaubt das Übertragen von Warp Punkten zwischen Spielern
+    default: op
