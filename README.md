@@ -49,7 +49,7 @@ Ein flexibles Warp-Plugin mit optionalem Webinterface, API und Datenbankunterst�
 1.  **Voraussetzungen:**
     *   Java 21 oder höher.
     *   Minecraft Server Software, die die Bukkit API unterstützt (z. B. Spigot, Paper) in Version 1.21 oder höher (siehe `plugin.yml` für `api-version`).
-2.  **Download:** Lade die neueste `WarpMaster-X.Y.Z.jar`-Datei von der [GitHub Releases Seite](https://github.com/dasjeff/warpmaster/releases) herunter.
+2.  **Download:** Lade die neueste `WarpMaster-X.Y.Z.jar`-Datei von der [GitHub Releases Seite](https://github.com/DasJeff/WarpMaster/releases) herunter.
 3.  **Platzieren:** Kopiere die heruntergeladene `.jar`-Datei in den `plugins`-Ordner deines Minecraft-Servers.
 4.  **Server starten:** Starte deinen Minecraft-Server. Das Plugin erstellt beim ersten Start die Konfigurationsdatei (`config.yml`).
 5.  **Konfigurieren:** Stoppe den Server und bearbeite die `plugins/WarpMaster/config.yml` nach deinen Wünschen (siehe Abschnitt [Konfiguration](#konfiguration)). Achte besonders auf die Datenbankeinstellungen und den API-Schlüssel!
@@ -298,4 +298,4 @@ Bitte lies die vollständigen Lizenzbedingungen in der [LICENSE](LICENSE)-Datei.
 
 ## Support & Probleme
 
-Wenn du Fehler findest, Vorschläge hast oder Fragen zur eingeschränkten Nutzung hast, erstelle bitte ein [Issue](https://github.com/dasjeff/warpmaster/issues) auf GitHub. 
+Wenn du Fehler findest, Vorschläge hast oder Fragen zur eingeschränkten Nutzung hast, erstelle bitte ein [Issue](https://github.com/DasJeff/WarpMaster/issues) auf GitHub. 
