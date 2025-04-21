@@ -166,24 +166,6 @@ public class ApiManager {
     }
 
     /**
-     * Checks authentication for dashboard access.
-     * Redirects to login page if not authenticated.
-     *
-     * @param ctx The context
-     */
-    private void dashboardAuthCheck(Context ctx) {
-        String apiKey = ctx.header("X-API-Key");
-
-        // If API key is valid, allow access to the dashboard
-        if (apiKey != null && apiKey.equals(configUtil.getApiKey())) {
-            return;
-        }
-
-        // No valid API key, redirect to login page
-        ctx.redirect("/login.html");
-    }
-
-    /**
      * Checks and increments the rate limit for a given IP.
      * Also performs periodic cleanup of old entries.
      *
