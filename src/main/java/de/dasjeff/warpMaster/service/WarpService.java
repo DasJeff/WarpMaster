@@ -38,6 +38,7 @@ public class WarpService {
     private final ConcurrentHashMap<UUID, List<Warp>> playerWarpsCache = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, Integer> warpCountCache = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, List<String>> warpNameCache = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, CompletableFuture<List<Warp>>> activeReloads = new ConcurrentHashMap<>();
 
     /**
      * Creates a new WarpService instance.
@@ -329,7 +330,7 @@ public class WarpService {
                  }, executor)
                  .exceptionally(ex -> {
                       // Handle exceptions from fetching source warp or the transaction itself
-                      plugin.getLogger().log(Level.SEVERE, "Error during warp transfer for warp '" + name + "' from " + sourceUuid + " to " + targetUuid, ex);
+                      plugin.getLogger().log(Level.SEVERE, "Error during warp transfer transaction for warp '" + name + "' from " + sourceUuid + " to " + targetUuid, ex);
                       return Result.<Void>error("internal-error");
                  });
          }, executor);
@@ -423,7 +424,7 @@ public class WarpService {
     }
 
     /**
-     * Invalidates all caches associated with a specific player.
+     * Invalidates all caches associated with a specific player and triggers an asynchronous reload.
      *
      * @param playerUuid The UUID of the player whose caches should be invalidated.
      */
@@ -433,8 +434,45 @@ public class WarpService {
         warpCountCache.remove(playerUuid);
         warpNameCache.remove(playerUuid);
         if (plugin.getLogger().isLoggable(Level.FINE)) {
-             plugin.getLogger().log(Level.FINE, "Invalidated caches for player {0}", playerUuid);
+            plugin.getLogger().log(Level.FINE, "Invalidated caches for player {0}", playerUuid);
         }
+        // Trigger background reload
+        triggerCacheReload(playerUuid);
+    }
+
+    /**
+     * Triggers an asynchronous reload of a player's warp caches if one isn't already running.
+     *
+     * @param playerUuid The player's UUID.
+     * @return The CompletableFuture representing the reload task.
+     */
+    private CompletableFuture<List<Warp>> triggerCacheReload(UUID playerUuid) {
+        return activeReloads.computeIfAbsent(playerUuid, uuid -> {
+            if (plugin.getLogger().isLoggable(Level.FINE)) {
+                plugin.getLogger().log(Level.FINE, "Triggering background cache reload for player {0}", playerUuid);
+            }
+            CompletableFuture<List<Warp>> reloadFuture = warpRepository.getWarpsByOwner(uuid)
+                    .thenApplyAsync(warps -> {
+                        playerWarpsCache.put(uuid, warps);
+                        warpCountCache.put(uuid, warps.size());
+                        List<String> names = warps.stream().map(Warp::getName).collect(Collectors.toList());
+                        warpNameCache.put(uuid, names);
+                        if (plugin.getLogger().isLoggable(Level.FINE)) {
+                            plugin.getLogger().log(Level.FINE, "Background cache reload completed for player {0}", playerUuid);
+                        }
+                        return warps;
+                    }, executor);
+
+            // Ensure the future is removed from activeReloads once completed
+            reloadFuture.whenCompleteAsync((result, throwable) -> {
+                if (throwable != null) {
+                     plugin.getLogger().log(Level.WARNING, "Background cache reload failed for player " + playerUuid, throwable);
+                }
+                activeReloads.remove(uuid, reloadFuture);
+            }, executor);
+
+            return reloadFuture;
+        });
     }
 
     /**
@@ -458,24 +496,46 @@ public class WarpService {
     public List<String> getCachedWarpNames(UUID playerUuid) {
         List<String> cachedNames = warpNameCache.get(playerUuid);
 
-        // If cache is null, trigger background load
-        if (cachedNames == null) {
-            // Check if the full warp list is also not cached
-            if (!playerWarpsCache.containsKey(playerUuid)) {
-                 if (plugin.getLogger().isLoggable(Level.FINE)) {
-                     plugin.getLogger().log(Level.FINE, "Warp name cache miss for {0}, triggering background load.", playerUuid);
-                 }
-                 getWarps(playerUuid).exceptionally(ex -> {
-                     plugin.getLogger().log(Level.WARNING, "Background warp load failed for " + playerUuid, ex);
-                     return null;
-                 });
+        // If cache is valid, return it directly
+        if (cachedNames != null) {
+            return cachedNames;
+        }
+
+        // Cache is empty, check if a reload is in progress
+        CompletableFuture<List<Warp>> reloadFuture = activeReloads.get(playerUuid);
+
+        if (reloadFuture != null) {
+             if (plugin.getLogger().isLoggable(Level.FINE)) {
+                 plugin.getLogger().log(Level.FINE, "Warp name cache miss for {0}, waiting for active reload...", playerUuid);
+             }
+             try {
+                 // Wait for the ongoing reload to complete
+                 reloadFuture.join();
+             } catch (Exception e) {
+                 plugin.getLogger().log(Level.WARNING, "Exception while waiting for cache reload for player " + playerUuid, e);
+                 return Collections.emptyList();
+             }
+
+             // Reading the cache again
+             cachedNames = warpNameCache.get(playerUuid);
+              if (plugin.getLogger().isLoggable(Level.FINE)) {
+                 plugin.getLogger().log(Level.FINE, "Active reload finished for {0}, returning cached names (if available).", playerUuid);
+             }
+             return (cachedNames != null) ? cachedNames : Collections.emptyList();
+
+        } else {
+            // Trigger a load asynchronously and return empty for now.
+            if (plugin.getLogger().isLoggable(Level.FINE)) {
+                plugin.getLogger().log(Level.FINE, "Warp name cache miss for {0}, no active reload found. Triggering background load.", playerUuid);
             }
+            // Trigger background load
+            triggerCacheReload(playerUuid).exceptionally(ex -> {
+                 plugin.getLogger().log(Level.WARNING, "Background warp load (triggered by getCachedWarpNames) failed for " + playerUuid, ex);
+                 return null;
+             });
             // Return empty list for this synchronous request
             return Collections.emptyList();
         }
-
-        // Return the cached names
-        return cachedNames;
     }
 
     /**
