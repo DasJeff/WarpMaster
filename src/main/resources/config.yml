@@ -44,4 +44,4 @@ messages:
   warp-already-exists: "&cDu hast bereits einen Warp mit dem Namen &e%name%&c!"
   no-permission: "&cDu hast keine Berechtigung dafür!"
   player-not-found: "&cSpieler &e%player% &cnicht gefunden!"
-  cooldown-active: "&cBitte warte &e%time% &cSekunden, bevor du dich erneut warpst!"
+  cooldown-active: "&cBitte warte &e%time% &cSekunden, bevor du dich erneut teleportierst!"
