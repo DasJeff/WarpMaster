@@ -164,42 +164,6 @@
     display: block;
 }
 
-.minecraft-decoration {
-    position: absolute;
-    bottom: -20px;
-    right: -20px;
-    z-index: 0;
-    opacity: 0.3;
-}
-
-.creeper {
-    width: 120px;
-    height: 120px;
-    background-color: #50A050;
-    border: 3px solid #000;
-    position: relative;
-}
-
-.creeper::before, .creeper::after {
-    content: '';
-    position: absolute;
-    background-color: #000;
-}
-
-.creeper::before {
-    width: 80px;
-    height: 15px;
-    top: 40px;
-    left: 20px;
-}
-
-.creeper::after {
-    width: 15px;
-    height: 20px;
-    bottom: 30px;
-    left: 52px;
-}
-
 @keyframes shake {
     0%, 100% { transform: translateX(0); }
     10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
